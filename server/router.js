@@ -1,5 +1,6 @@
 const passport = require('passport');
 const userController = require('./controller/userController');
+const seed = require('./db/seed');
 
 module.exports = function(express) {
     const router = express.Router();
@@ -18,6 +19,11 @@ module.exports = function(express) {
         failureRedirect: '/rawr',
         // failureFlash: true
     }));
+
+    router.get('/seed', (req, res) => {
+      seed();
+      res.send('seeded database');
+    });
 
     return router;
 
