@@ -11,10 +11,6 @@ let Task = sequelize.define('task', {
         type: Sequelize.BOOLEAN,
         defaultValue: false
     },
-    // projectId: {
-    //     type: Sequelize.INTEGER,
-    //     allowNull: false
-    // }
 });
 
 module.exports = Task;
