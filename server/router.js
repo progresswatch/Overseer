@@ -10,33 +10,15 @@ module.exports = function(express) {
         else res.redirect('/');
     }
 
-    router.get('/signup', userController.show);
-
     router.post('/signup', userController.signup);
-    
+
     // fix all of these routes
     router.post('/', passport.authenticate('local',{
         successRedirect: '/dashboard',
         failureRedirect: '/rawr',
         // failureFlash: true
-    }))
+    }));
 
-    // fix routes
-    router.get('/', function(req, res) {
-        // we dont have a home
-        res.render('home');
-    })
-
-    router.get('/dashboard', isAuthenticated, function(req, res) {
-        // no dashboard
-        res.render('dashboard');
-    })
-
-    router.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
-    })
-    
     return router;
 
 }
