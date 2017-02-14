@@ -15,12 +15,13 @@ class ShowProject extends Component {
     this.submitTask = this.submitTask.bind(this);
     this.toggleCompletionAndUpdateProgress = this.toggleCompletionAndUpdateProgress.bind(this);
   }
-  toggleCompletionAndUpdateProgress(id, event) {
+  toggleCompletionAndUpdateProgress(id) {
     // console.log(id, event);
     fetch('/patch/' + id + '/' + this.props.params.id, 
       { method: 'PATCH' }, 
       (response) => {
         console.log(response);
+        this.fetchTask2();
     })
   }
   changeTask(event) {
@@ -91,12 +92,12 @@ class ShowProject extends Component {
   }
 
   render() {
-    const tasks = this.state.project.tasks.map((task) => {
+    const tasks = this.state.project.tasks.map((task) => {console.log(task.completed);
       return (
         <li key={task.id} className="list-group-item">
           <form>
-            {task.completed && <input type="checkbox" onChange={this.toggleCompletionAndUpdateProgress.bind(null, task.id)} checked></input>}
-            {task.completed || <input type="checkbox" onChange={this.toggleCompletionAndUpdateProgress.bind(null, task.id)}></input>}
+            {task.completed ? <input type="checkbox" onClick={this.toggleCompletionAndUpdateProgress.bind(null, task.id)} checked></input> :
+             <input type="checkbox" onClick={this.toggleCompletionAndUpdateProgress.bind(null, task.id)}></input>}
             {task.name}
           </form>
         </li>

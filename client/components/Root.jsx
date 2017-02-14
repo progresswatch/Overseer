@@ -16,11 +16,24 @@ class Root extends Component {
             password: '',
             userInformation: '',
             isLoggedIn: false,
+            projects: []
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
+        this.fetchProjects = this.fetchProjects.bind(this);
     }
-
+    fetchProjects() {
+        fetch('/get_projects')
+        .then((response) => {
+            return response.json()
+        })
+        .then((projects) => {
+            this.setState({ projects });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
     handleLogin(e) {
         const username = e.target.elements.username.value;
         const password = e.target.elements.password.value;
@@ -95,6 +108,7 @@ class Root extends Component {
             return React.cloneElement(child, {
               handleSubmit: this.handleSubmit,
               handleLogin: this.handleLogin,
+              fetchProjects: this.fetchProjects,
               appState: this.state
             });
         });

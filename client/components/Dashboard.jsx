@@ -4,37 +4,28 @@ import { Link, browserHistory } from 'react-router';
 class Dashboard extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      projects: [],
-    };
+    // this.state = {
+    //   projects: [],
+    // };
   }
 
-  componentWillMount() {
-    fetch('/a', { method: 'GET' })
-        .then((response) => {
-            return response.json();
-        }).then((response) => {
-            console.log(response);
-            if (!response) browserHistory.push('/login');
-        }).catch((err) => {
-            throw err;
-        })
-  }
+  // componentWillMount() {
+  //   fetch('/a', { method: 'GET' })
+  //       .then((response) => {
+  //           return response.json();
+  //       }).then((response) => {
+  //           console.log(response);
+  //           if (!response) browserHistory.push('/login');
+  //       }).catch((err) => {
+  //           throw err;
+  //       })
+  // }
   componentDidMount() {
-    fetch('/get_projects')
-      .then((response) => {
-        return response.json()
-      })
-      .then((projects) => {
-        this.setState({ projects });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.props.fetchProjects();
   }
 
   render() {
-    const projects = this.state.projects.map((project) => {
+    const projects = this.props.appState.projects.map((project) => {
       return <Link key={project.id} className="list-group-item" to={`/dashboard/projects/${project.id}`}>{project.name}</Link>;
     });
 
