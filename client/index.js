@@ -13,10 +13,10 @@ ReactDOM.render((
   <Router history={browserHistory}>
     <Route path='/' component={Root}>
       <IndexRoute component={App} />
-      <Route path='/signup' component={Signup} />
-      <Route path='/login' component={Login} />
-      <Route path='/dashboard' component={Dashboard} />
-      <Route path='/dashboard/projects/:id' component={ShowProject} />
+      <Route path='signup' component={Signup} />
+      <Route path='login' component={Login} />
+      <Route path='dashboard' component={Dashboard} />
+      <Route path='dashboard/projects/:id' component={ShowProject} />
     </Route>
   </Router>
 ), document.getElementById('root'));

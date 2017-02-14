@@ -7,6 +7,9 @@ class ShowProject extends Component {
     this.state = {
       tasks: [],
       newTask: '',
+      project: {
+        tasks: []
+      },
     };
     this.changeTask = this.changeTask.bind(this);
     this.submitTask = this.submitTask.bind(this);
@@ -21,10 +24,11 @@ class ShowProject extends Component {
 
   submitTask(event) {
     const body = {
-      name: this.state.newTask,
+      name: event.target.newTask.value,
       projectId: this.props.params.id,
     };
     event.preventDefault();
+    event.persist();
     fetch('/add_task', {
       headers: {
         'Content-Type': 'application/json'
@@ -32,7 +36,16 @@ class ShowProject extends Component {
       method: 'POST',
       body: JSON.stringify(body),
     }).then((res) => {
-      this.fetchTask();
+      // this.fetchTask();
+      return res.json();
+    }).then((newTask) => {
+      const newProject = Object.assign({}, this.state.project);
+      newProject.tasks.push(newTask);
+      event.target.newTask.value = '';
+
+      this.setState({
+        project: newProject,
+      });
     })
   }
 
@@ -49,28 +62,53 @@ class ShowProject extends Component {
       });
   }
 
+  fetchTask2() {
+    // fetch(`/get_tasks/${this.props.params.id}`)
+    fetch(`/get_project_info/${this.props.params.id}`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((project) => {
+        this.setState({ project });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+
+
   componentWillMount() {
-    this.fetchTask();
+    this.fetchTask2();
   }
 
   render() {
-    const tasks = this.state.tasks.map((task) => {
-      return <Link className="list-group-item" to="#">{task.name}</Link>
+    const tasks = this.state.project.tasks.map((task) => {
+      return <li key={task.id} className="list-group-item">{task.name}</li>
     });
 
     return (
       <div className="container">
-        <h1>List of tasks for some project</h1>
-        <div className="list-group">
-          {tasks}
+        <div className="row">
+          <div className="col-md-8 col-md-offset-2">
+            <h1>{this.state.project.name}</h1>
+            <h3>Tasks:</h3>
+            <ul className="list-group">
+              {tasks}
+            </ul>
+            <form onSubmit={this.submitTask}>
+              <div className="form-group">
+                <div className="input-group">
+                  <input type="text" name="newTask" className="form-control" placeholder="New Task" />
+                  <span className="input-group-btn">
+
+                    <input type="submit" className="btn btn-default" value="Add Task" />
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-        <form onSubmit={this.submitTask}>
-          <label>
-          Task name:
-          <input type='text' name='newTask' onChange={this.changeTask} />
-          </label>
-          <input type='submit' value='Add Task'/>
-        </form>
       </div>
     );
   }

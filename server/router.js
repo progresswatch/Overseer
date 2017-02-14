@@ -33,6 +33,8 @@ module.exports = function(express) {
     router.get('/get_tasks/:id', taskController.getTasks);
     router.post('/add_task', taskController.addTask);
 
+    router.get('/get_project_info/:id', projectController.getProjectInformation);
+
     return router;
 
 }

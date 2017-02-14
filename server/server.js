@@ -9,11 +9,9 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, '..', 'client')));
-
+app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
-app.use(bodyparser.urlencoded( {extended: true }));
-
+app.use(express.static(path.join(__dirname, '..', 'client')));
 
 app.use(session({
   secret: 'overseerRTK',
