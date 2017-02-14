@@ -29,9 +29,13 @@ class Dashboard extends Component {
 
     return (
       <div className="container">
-        <h1>Dashboard</h1>
-        <div className="list-group">
-          {projects}
+        <div className="row">
+          <div className="col-md-8 col-md-offset-2">
+            <h1>Dashboard</h1>
+            <div className="list-group">
+              {projects}
+            </div>
+          </div>
         </div>
       </div>
     );
