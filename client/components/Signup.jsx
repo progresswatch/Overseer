@@ -2,45 +2,53 @@ import React, { Component } from 'react';
 import Dashboard from './Dashboard.jsx';
 
 class Signup extends Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
-        return (
-            <div>
+  render() {
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6 col-md-offset-3">
+            <div className="well">
+              <div className="page-header">
                 <h1>Sign up</h1>
-                <form onSubmit={this.props.handleSubmit}>
-                <label>
-                First Name:
-                    <input name='firstName' type='text' />
-                </label>
-                <br/>
-                <label>
-                Last Name:
-                    <input name='lastName' type='text' />
-                </label>
-                <br/>
-                <label>
-                Email:
-                    <input name='email' type='email' />
-                </label>
-                <br/>
-                <label>
-                Username:
-                    <input name='username' type='text' />
-                </label>
-                <br/>
-                <label>
-                Password:
-                    <input name='password' type='password' />
-                </label>
-                <br/>
-                <button type='Submit'>Submit Form</button>
-                </form>
+              </div>
+              <form onSubmit={this.props.handleSubmit}>
+                <div className="form-group">
+                  <label htmlFor="firstName">First name</label>
+                  <input type="text" id="firstName" className="form-control" name="firstName" placeholder="First name" autoFocus />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="lastName">Last name</label>
+                  <input type="text" id="lastName" className="form-control" name="lastName" placeholder="Last name" />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="email">Email</label>
+                  <input type="email" id="email" className="form-control" name="email" placeholder="Email" />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="username">Username</label>
+                  <input type="text" id="username" className="form-control" name="username" placeholder="Username" />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="password">Password</label>
+                  <input type="password" id="password" className="form-control" name="password" placeholder="Password" />
+                </div>
+
+                <button className="btn btn-block btn-primary" type="submit">Sign up</button>
+              </form>
             </div>
-        )
-    }
+          </div>
+        </div>
+      </div>
+    )
+  }
 }
 
 export default Signup;
