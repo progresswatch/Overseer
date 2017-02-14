@@ -7,6 +7,29 @@ class Dashboard extends Component {
     this.state = {
       projects: [],
     };
+    this.submitProject = this.submitProject.bind(this);
+  }
+
+  submitProject(event) {
+    const body = {
+      name: event.target.newProject.value,
+    };
+    event.preventDefault();
+    event.persist();
+    fetch('/add_project', {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(body),
+    }).then(res => res.json()).then(newProject => {
+      console.log(newProject);
+      const newProjects = this.state.projects.concat(newProject);
+      event.target.newProject.value = '';
+      this.setState({
+        projects: newProjects
+      });
+    })
   }
 
   componentWillMount() {
@@ -35,6 +58,16 @@ class Dashboard extends Component {
             <div className="list-group">
               {projects}
             </div>
+            <form onSubmit={this.submitProject}>
+              <div className="form-group">
+                <div className="input-group">
+                  <input type="text" name="newProject" className="form-control" placeholder="New Project" />
+                  <span className="input-group-btn">
+                    <input type="submit" className="btn btn-default" value="Add Project" />
+                  </span>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
