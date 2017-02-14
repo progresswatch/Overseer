@@ -13,6 +13,28 @@ app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 app.use(express.static(path.join(__dirname, '..', 'client')));
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+// add hot reload if in development
+if (isDevelopment) {
+  console.log('DEVELOPMENT MODE');
+  console.log('HOTLOADING CHANGES');
+  const webpack = require('webpack');
+  const webpackConfig = require('../webpack.config');
+  const compiler = webpack(webpackConfig);
+
+  app.use(require('webpack-dev-middleware')(compiler, {
+    hot: true,
+    stats: {
+      colors: true
+    },
+    publicPath: webpackConfig.output.publicPath,
+    noInfo: true,
+  }));
+
+  app.use(require('webpack-hot-middleware')(compiler));
+}
+
 app.use(session({
   secret: 'overseerRTK',
   resave: false,
