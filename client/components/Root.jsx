@@ -83,7 +83,7 @@ class Root extends Component {
 
     render() {
         const theProps = React.Children.map(this.props.children, (child) => {
-            return React.cloneElement(child, { handleSubmit: this.handleSubmit, handleLogin: this.handleLogin });
+            return React.cloneElement(child, { handleSubmit: this.handleSubmit, handleLogin: this.handleLogin, appState: this.state });
         })
 
         return (
