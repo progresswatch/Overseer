@@ -6,7 +6,8 @@ import Signup from './components/Signup.jsx';
 import Login from './components/Login.jsx';
 import Root from './components/Root.jsx';
 import Dashboard from './components/Dashboard.jsx';
-import AddProject from './components/AddProject.jsx';
+import ShowProject from './components/ShowProject.jsx';
+// import AddProject from './components/AddProject.jsx';
 
 ReactDOM.render((
   <Router history={browserHistory}>
@@ -15,7 +16,7 @@ ReactDOM.render((
       <Route path='/signup' component={Signup} />
       <Route path='/login' component={Login} />
       <Route path='/dashboard' component={Dashboard} />
-      <Route path='/addproject' component={AddProject} />
+      <Route path='/dashboard/projects/:id' component={ShowProject} />
     </Route>
   </Router>
 ), document.getElementById('root'));

@@ -30,7 +30,7 @@ module.exports = function(express) {
     router.get('/get_projects', projectController.getProjects);
     router.post('/add_project', projectController.addProject);
 
-    router.get('/get_tasks', taskController.getTasks);
+    router.get('/get_tasks/:id', taskController.getTasks);
     router.post('/add_task', taskController.addTask);
 
     return router;
