@@ -4,22 +4,7 @@ import { Link, browserHistory } from 'react-router';
 class Dashboard extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   projects: [],
-    // };
   }
-
-  // componentWillMount() {
-  //   fetch('/a', { method: 'GET' })
-  //       .then((response) => {
-  //           return response.json();
-  //       }).then((response) => {
-  //           console.log(response);
-  //           if (!response) browserHistory.push('/login');
-  //       }).catch((err) => {
-  //           throw err;
-  //       })
-  // }
   componentDidMount() {
     this.props.fetchProjects();
   }
@@ -33,10 +18,20 @@ class Dashboard extends Component {
       <div className="container">
         <div className="row">
           <div className="col-md-8 col-md-offset-2">
-            <h1>Dashboard</h1>
+            <h1>Dashboard HOT RELOAD!!</h1>
             <div className="list-group">
               {projects}
             </div>
+            <form onSubmit={this.props.submitProject}>
+              <div className="form-group">
+                <div className="input-group">
+                  <input type="text" name="newProject" className="form-control" placeholder="New Project" />
+                  <span className="input-group-btn">
+                    <input type="submit" className="btn btn-default" value="Add Project" />
+                  </span>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>

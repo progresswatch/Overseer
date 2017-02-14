@@ -7,7 +7,8 @@ projectController.addProject = (req, res) => {
   Project.create({
     name: req.body.name
   }).then((result) => {
-    return res.send('Project created');
+    // return res.send('Project created');
+    return res.json(result);
   }).catch((err) => {
     throw err;
   });
