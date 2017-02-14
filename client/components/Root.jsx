@@ -12,7 +12,8 @@ class Root extends Component {
             email: '',
             username: '',
             password: '',
-            userInformation: ''
+            userInformation: '',
+            isLoggedIn: false,
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
@@ -83,8 +84,12 @@ class Root extends Component {
 
     render() {
         const theProps = React.Children.map(this.props.children, (child) => {
-            return React.cloneElement(child, { handleSubmit: this.handleSubmit, handleLogin: this.handleLogin, appState: this.state });
-        })
+            return React.cloneElement(child, {
+              handleSubmit: this.handleSubmit,
+              handleLogin: this.handleLogin,
+              appState: this.state
+            });
+        });
 
         return (
             <div>

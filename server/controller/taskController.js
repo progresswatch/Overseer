@@ -3,7 +3,7 @@ const Task = require('../models/task');
 const taskController = {};
 
 taskController.getTasks = (req, res) => {
-  Task.find({})
+  Task.findAll({ where: { projectId: req.params.id } })
     .then((tasks) => {
       res.json(tasks);
     }).catch((err) => {
