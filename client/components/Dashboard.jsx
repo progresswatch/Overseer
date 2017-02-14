@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ToDoList from './ToDoList.jsx';
-// import { browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import AddProject from './AddProject.jsx'
 import Progress from './Progress.jsx'
 import Edit from './Edit.jsx'
@@ -20,11 +20,12 @@ class Dashboard extends Component {
             // panel: 'addProject' // and edit
         }
     }
-
+    componentWillMount() {
+        if (!isLoggedIn) browserHistory.push('/login');
+    }
     onClickAddProject() {  
         this.setState({
             panel: 'addProject'
-
         })
     }
 

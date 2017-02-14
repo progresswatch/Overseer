@@ -7,6 +7,8 @@ class Root extends Component {
     constructor() {
         super();
         this.state = {
+            user: '',
+            isLoggedIn: false,
             firstName: '',
             lastName: '',
             email: '',
@@ -33,16 +35,22 @@ class Root extends Component {
             })
         }).then((res) => {
             if(res.status === 200) {
-                browserHistory.push('/dashboard');
+                return res.json();
             } else {
                 alert('Please enter valid fields.');
                 browserHistory.push('/');
             }
+        }).then((data) => {
+            // console.log(data);
+            this.setState({
+                user: data.userName,
+                isLoggedIn: true
+            });
+            browserHistory.push('/dashboard');
         }).catch((res) => {
             alert('Please enter valid fields.');
             browserHistory.push('/');
         })
-
         e.preventDefault();
     }
 
@@ -83,7 +91,12 @@ class Root extends Component {
 
     render() {
         const theProps = React.Children.map(this.props.children, (child) => {
-            return React.cloneElement(child, { handleSubmit: this.handleSubmit, handleLogin: this.handleLogin });
+            return React.cloneElement(child, { 
+                handleSubmit: this.handleSubmit, 
+                handleLogin: this.handleLogin,
+                isLoggedIn: this.state.isLoggedIn,
+                userName: this.state.user
+             });
         })
 
         return (
