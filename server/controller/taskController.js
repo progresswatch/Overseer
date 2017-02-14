@@ -13,7 +13,8 @@ taskController.getTasks = (req, res) => {
 
 taskController.addTask = (req, res) => {
   Task.create({
-    name: req.body.name
+    name: req.body.name,
+    projectId: req.body.projectId,
   }).then((result) => {
     res.send('Task Added');
   }).catch((err) => {
