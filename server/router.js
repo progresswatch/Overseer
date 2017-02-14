@@ -3,6 +3,7 @@ const userController = require('./controller/userController');
 const seed = require('./db/seed');
 const projectController = require('./controller/projectController');
 const taskController = require('./controller/taskController');
+const session = require('express-session');
 
 module.exports = function(express) {
     const router = express.Router();
@@ -23,10 +24,21 @@ module.exports = function(express) {
     // }));
 
     router.post('/', passport.authenticate('local'), (req, res) => {
+        req.session.isLoggedIn = true;
+        console.log('COOKIE',req.cookies)
+        console.log(req.session, Date.now());
         res.json({
             userName: req.user.username,
         });
     });
+    router.get('/a',  (req, res) => {
+        if (req.session.isLoggedIn) {
+            console.log(req.session);
+            return res.json({some:'thing'});
+        } console.log('SESSION?',req.session)
+        req.session.isLoggedIn = true;
+        res.json({other:'thing'});
+    })
 
     router.get('/seed', (req, res) => {
       seed();

@@ -12,7 +12,9 @@ class ShowProject extends Component {
     this.submitTask = this.submitTask.bind(this);
 
   }
-
+  toggleTaskAndUpdateProgress() {
+    
+  }
   changeTask(event) {
     event.preventDefault();
     console.log(event.target.value);

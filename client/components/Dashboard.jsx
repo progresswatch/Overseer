@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -10,9 +10,17 @@ class Dashboard extends Component {
   }
 
   componentWillMount() {
-    if (!this.props.appState.isLoggedIn) {
-        browserHistory.push('/login');
-    }
+    fetch('/a', { method: 'GET' })
+        .then((response) => {
+            return response.json();
+        }).then((response) => {
+            console.log(response);
+            if (!response) browserHistory.push('/login');
+        }).catch((err) => {
+            throw err;
+        })
+  }
+  componentDidMount() {
     fetch('/get_projects')
       .then((response) => {
         return response.json()
