@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Router, Route, IndexRoute, browserHistory, Link } from 'react-router';
 import App from './App.jsx';
+import Navbar from './Navbar.jsx';
 
 class Root extends Component {
     constructor() {
@@ -20,7 +21,7 @@ class Root extends Component {
     handleLogin(e) {
         const username = e.target.elements.username.value;
         const password = e.target.elements.password.value;
-        
+
         fetch('/', {
             method: 'post',
             body: JSON.stringify({
@@ -87,8 +88,9 @@ class Root extends Component {
 
         return (
             <div>
+              <Navbar />
                 {theProps}
-            </div>            
+            </div>
         )
     }
 }

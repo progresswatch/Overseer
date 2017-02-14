@@ -1,5 +1,6 @@
 const passport = require('passport');
 const userController = require('./controller/userController');
+const seed = require('./db/seed');
 const projectController = require('./controller/projectController');
 const taskController = require('./controller/taskController');
 
@@ -25,6 +26,11 @@ module.exports = function(express) {
         res.json({
             userName: req.user.username,
         });
+    });
+
+    router.get('/seed', (req, res) => {
+      seed();
+      res.send('seeded database');
     });
 
     router.get('/get_projects', projectController.getProjects);
