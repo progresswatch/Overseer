@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const db = {};
 
-const sequelize = new Sequelize('progresswatch', 'shahrodkhalkhali', 'password', {
+const sequelize = new Sequelize('progresswatch', 'postgres', 'password', {
     host: 'localhost',
     dialect: 'postgres',
 });
