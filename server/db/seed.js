@@ -3,13 +3,13 @@ const bcrypt = require('bcrypt');
 
 module.exports = () => {
   const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync('password', salt);
+  const hash = bcrypt.hashSync('qwe', salt);
 
   const newUser = {
-    firstName: 'Joseph',
-    lastName: 'Vu',
-    email: 'jvu009@gmail.com',
-    username: 'jvu009',
+    firstName: 'qwe',
+    lastName: 'qwe',
+    email: 'qwe@qwe.com',
+    username: 'qwe',
     password: hash,
     salt,
   };
@@ -17,13 +17,14 @@ module.exports = () => {
   Models.User.create(newUser)
     .then((user) => {
       return Models.Project.create({
-        name: 'First Project',
+        name: 'Seed Database',
         userId: user.id,
       });
     })
     .then((project) => {
       return Models.Task.create({
-        name: `First task for project: ${project.name}`,
+        name: 'add seed.js',
+        projectId: project.id,
       });
     })
     .then((task) => {
