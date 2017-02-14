@@ -1,7 +1,4 @@
-.page-header {
-  margin-top: 0;
-}
-
-h1 {
-  margin-top: 0;
+legend {
+  padding-bottom: 10px;
+  font-size: 24px;
 }
