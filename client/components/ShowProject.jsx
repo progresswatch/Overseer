@@ -13,12 +13,20 @@ class ShowProject extends Component {
     };
     this.changeTask = this.changeTask.bind(this);
     this.submitTask = this.submitTask.bind(this);
-
+    this.toggleCompletionAndUpdateProgress = this.toggleCompletionAndUpdateProgress.bind(this);
   }
-
+  toggleCompletionAndUpdateProgress(id) {
+    // console.log(id, event);
+    fetch('/patch/' + id + '/' + this.props.params.id, 
+      { method: 'PATCH' }, 
+      (response) => {
+        console.log(response);
+        this.fetchTask2();
+    })
+  }
   changeTask(event) {
     event.preventDefault();
-    console.log(event.target.value);
+    // console.log(event.target.value);
     this.setState({newTask: event.target.value});
   }
 
@@ -46,6 +54,7 @@ class ShowProject extends Component {
       this.setState({
         project: newProject,
       });
+      console.log(this.state.project);
     })
   }
 
@@ -83,14 +92,25 @@ class ShowProject extends Component {
   }
 
   render() {
-    const tasks = this.state.project.tasks.map((task) => {
-      return <li key={task.id} className="list-group-item">{task.name}</li>
+    const tasks = this.state.project.tasks.map((task) => {console.log(task.completed);
+      return (
+        <li key={task.id} className="list-group-item">
+          <form>
+            {task.completed ? <input type="checkbox" onClick={this.toggleCompletionAndUpdateProgress.bind(null, task.id)} checked></input> :
+             <input type="checkbox" onClick={this.toggleCompletionAndUpdateProgress.bind(null, task.id)}></input>}
+            {task.name}
+          </form>
+        </li>
+      )
     });
 
     return (
       <div className="container">
         <div className="row">
           <div className="col-md-8 col-md-offset-2">
+            <div className="progress progress-striped active">
+              <div className="progress-bar" style={{ width: this.state.project.percentProgress + 80 + '%' }}></div>
+            </div>
             <h1>{this.state.project.name}</h1>
             <h3>Tasks:</h3>
             <ul className="list-group">

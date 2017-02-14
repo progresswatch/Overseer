@@ -37,4 +37,25 @@ projectController.getProjectInformation = (req, res) => {
   });
 }
 
+projectController.updateProgress = (req, res) => {
+  Models.Task.findAll({
+    where: {
+      projectId: req.params.projectId
+    }
+  }).then((tasks) => {
+    const completed = tasks.filter((task) => {
+      return task.dataValues.completed;
+    });
+    percentProgress = (completed.length/tasks.length) * 100;
+    Project.findById(req.params.projectId)
+      .then((project) => {
+        project.update({
+          percentProgress
+        }).then((result) => {
+          res.json({percentProgress});
+        })
+      })
+
+  })
+}
 module.exports = projectController;

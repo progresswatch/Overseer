@@ -5,13 +5,13 @@ const userController = require('./controller/userController');
 const passportSetup = require('./passportSetup');
 const router = require('./router')(express);
 const session = require('express-session');
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 
 const app = express();
 
-app.use(bodyparser.urlencoded({ extended: true }));
+// app.use(cookieParser());
 app.use(bodyparser.json());
-app.use(express.static(path.join(__dirname, '..', 'client')));
+app.use(bodyparser.urlencoded( {extended: true }));
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -47,7 +47,7 @@ passportSetup(app);
 // add cookierparser
 
 app.use('/', router);
-
+app.use(express.static(path.join(__dirname, '..', 'client')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });

@@ -24,4 +24,14 @@ taskController.addTask = (req, res) => {
   });
 };
 
+taskController.toggleCompletion = (req, res, next) => {
+  Task.findById(req.params.taskId)
+    .then((task) => {
+      task.update({
+        completed : !task.completed
+      }).then((result) => {
+        next();
+      })
+    })
+}
 module.exports = taskController;

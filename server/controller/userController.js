@@ -14,7 +14,7 @@ userController.signup = function(req, res) {
         res.status(404).end();
     } else {
         const salt = bcrypt.genSaltSync(10);
-        console.log(password, salt);
+        // console.log(password, salt);
         const hashedPassword = bcrypt.hashSync(password, salt);
         const newUser = {
             firstName,
