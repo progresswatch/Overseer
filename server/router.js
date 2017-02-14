@@ -25,20 +25,17 @@ module.exports = function(express) {
 
     router.post('/', passport.authenticate('local'), (req, res) => {
         req.session.isLoggedIn = true;
-        console.log('COOKIE',req.cookies)
-        console.log(req.session, Date.now());
         res.json({
             userName: req.user.username,
         });
     });
-    router.get('/a',  (req, res) => {
-        if (req.session.isLoggedIn) {
-            console.log(req.session);
-            return res.json({some:'thing'});
-        } console.log('SESSION?',req.session)
-        req.session.isLoggedIn = true;
-        res.json({other:'thing'});
-    })
+    // router.get('/a',  (req, res) => {
+    //     if (req.session.isLoggedIn) {
+    //         return res.json({some:'thing'});
+    //     } 
+    //     req.session.isLoggedIn = true;
+    //     res.json({other:'thing'});
+    // })
 
     router.get('/seed', (req, res) => {
       seed();
@@ -49,7 +46,11 @@ module.exports = function(express) {
     router.post('/add_project', projectController.addProject);
 
     router.get('/get_tasks/:id', taskController.getTasks);
-    router.post('/add_task', taskController.addTask);
+    router.post('/add_task', taskController.addTask, projectController.updateProgress);
+
+    router.get('/get_project_info/:id', projectController.getProjectInformation);
+
+    router.patch('/patch/:taskId/:projectId', taskController.toggleCompletion, projectController.updateProgress);
 
     return router;
 

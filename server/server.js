@@ -9,7 +9,6 @@ const session = require('express-session');
 
 const app = express();
 
-
 // app.use(cookieParser());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded( {extended: true }));
@@ -19,13 +18,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
 }));
-// app.get('/checkLoggedIn', (req, res) => {
-//     // console.log(req.session)
-//   console.log('cookies',req.cookies);
-//   console.log(req.session, Date.now());
-//   if (req.session.isLoggedIn) return res.send(true);
-//   res.send(false);
-// })
+
 passportSetup(app);
 
 // add session
