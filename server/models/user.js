@@ -30,6 +30,10 @@ const User = sequelize.define('user', {
     },
     salt: {
         type: Sequelize.STRING
+    },
+    role: {
+        type: Sequelize.STRING,
+        allowNull: false
     }
 });
 

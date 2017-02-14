@@ -15,11 +15,17 @@ module.exports = function(express) {
     router.post('/signup', userController.signup);
 
     // fix all of these routes
-    router.post('/', passport.authenticate('local',{
-        successRedirect: '/dashboard',
-        failureRedirect: '/rawr',
-        // failureFlash: true
-    }));
+    // router.post('/', passport.authenticate('local',{
+    //     successRedirect: '/dashboard',
+    //     failureRedirect: '/rawr',
+    //     // failureFlash: true
+    // }));
+
+    router.post('/', passport.authenticate('local'), (req, res) => {
+        res.json({
+            userName: req.user.username,
+        });
+    });
 
     router.get('/get_projects', projectController.getProjects);
     router.post('/add_project', projectController.addProject);

@@ -14,7 +14,6 @@ app.use(express.static(path.join(__dirname, '..', 'client')));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded( {extended: true }));
 
-
 app.use(session({ secret: 'overseerRTK' }));
 
 passportSetup(app);
