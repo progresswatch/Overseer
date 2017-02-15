@@ -7,7 +7,7 @@
   "author": "RTK",
   "license": "MIT",
   "scripts": {
-    "start": "NODE ENV=development node server/server.js"
+    "start": "NODE_ENV=development node server/server.js"
   },
   "dependencies": {
     "bcrypt": "^1.0.2",
