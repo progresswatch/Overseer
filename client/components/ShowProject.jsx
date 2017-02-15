@@ -1,29 +1,52 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
+import ProgressBar from './ProgressBar.jsx';
+
 class ShowProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tasks: [],
-      newTask: '',
       project: {
         tasks: []
       },
+      incomplete: 0,
+      complete: 0,
+      total: 0,
     };
+
     this.changeTask = this.changeTask.bind(this);
     this.submitTask = this.submitTask.bind(this);
     this.toggleCompletionAndUpdateProgress = this.toggleCompletionAndUpdateProgress.bind(this);
   }
-  toggleCompletionAndUpdateProgress(id) {
-    // console.log(id, event);
-    fetch('/patch/' + id + '/' + this.props.params.id, 
-      { method: 'PATCH' }, 
-      (response) => {
-        console.log(response);
-        this.fetchTask2();
+
+  toggleCompletionAndUpdateProgress(id, e) {
+    e.preventDefault();
+    fetch(`/update_project/${this.props.params.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        taskId: id
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then((response) => {
+      console.log(response);
+      return response.json();
+    })
+    .then((project) => {
+      console.log(project);
+      this.setState({ project }, () => {
+        console.log('state updated');
+      });
+    })
+    .catch((err) => {
+      console.log('ERROR');
+      console.log(err);
     })
   }
+
   changeTask(event) {
     event.preventDefault();
     // console.log(event.target.value);
@@ -47,7 +70,7 @@ class ShowProject extends Component {
       // this.fetchTask();
       return res.json();
     }).then((newTask) => {
-      const newProject = Object.assign({}, this.state.project);
+      const newProject = Object.create(this.state.project);
       newProject.tasks.push(newTask);
       event.target.newTask.value = '';
 
@@ -58,21 +81,7 @@ class ShowProject extends Component {
     })
   }
 
-  fetchTask() {
-    fetch(`/get_tasks/${this.props.params.id}`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((tasks) => {
-        this.setState({ tasks });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
   fetchTask2() {
-    // fetch(`/get_tasks/${this.props.params.id}`)
     fetch(`/get_project_info/${this.props.params.id}`)
       .then((response) => {
         return response.json();
@@ -92,26 +101,29 @@ class ShowProject extends Component {
   }
 
   render() {
-    const tasks = this.state.project.tasks.map((task) => {console.log(task.completed);
-      return (
-        <li key={task.id} className="list-group-item">
-          <form>
-            {task.completed ? <input type="checkbox" onClick={this.toggleCompletionAndUpdateProgress.bind(null, task.id)} checked></input> :
-             <input type="checkbox" onClick={this.toggleCompletionAndUpdateProgress.bind(null, task.id)}></input>}
-            {task.name}
-          </form>
-        </li>
-      )
-    });
+    let tasks = [];
+
+    if (this.state.project.tasks) {
+      tasks = this.state.project.tasks.map((task, index) => {
+        return (
+          <li key={task.id} className="list-group-item">
+            <form>
+
+              <input type="checkbox" onChange={this.toggleCompletionAndUpdateProgress.bind(null, task.id)} checked={task.completed} /><label>{task.name}</label>
+
+            </form>
+          </li>
+        )
+      });
+    }
+
 
     return (
       <div className="container">
         <div className="row">
           <div className="col-md-8 col-md-offset-2">
-            <div className="progress progress-striped active">
-              <div className="progress-bar" style={{ width: this.state.project.percentProgress + 80 + '%' }}></div>
-            </div>
             <h1>{this.state.project.name}</h1>
+            <ProgressBar progress={this.state.project.percentProgress} />
             <h3>Tasks:</h3>
             <ul className="list-group">
               {tasks}
