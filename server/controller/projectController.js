@@ -30,7 +30,7 @@ projectController.getProjectInformation = (req, res) => {
   Models.Project.findById(req.params.id, {
     include: [
       {
-        model: Models.Task
+        model: Models.Task,
       }
     ]
   }).then((project) => {
@@ -44,7 +44,7 @@ projectController.updateProgress = (req, res) => {
   Models.Task.findAll({
     where: {
       projectId: req.params.projectId
-    }
+    },
   }).then((tasks) => {
     const completed = tasks.filter((task) => {
       return task.dataValues.completed;
@@ -63,7 +63,6 @@ projectController.updateProgress = (req, res) => {
 }
 
 projectController.updateProject = (req, res) => {
-  // pass Task ID in body
   Models.Task.findById(req.body.taskId)
     .then((task) => {
       console.log(task);
@@ -89,8 +88,25 @@ projectController.updateProject = (req, res) => {
     .catch((err) => {
       res.json(err);
     });
+}
 
-
+projectController.deleteProject = (req, res) => {
+  Models.Task.destroy({
+    where: { 'projectId': req.params.id }
+  })
+  .then(() => {
+    return Models.Project.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+  })
+  .then(() => {
+    res.status(200).end();
+  })
+  .catch((err) => {
+    res.json(err);
+  })
 
 }
 

@@ -28,5 +28,6 @@ router.get('/get_project_info/:id', projectController.getProjectInformation);
 router.patch('/patch/:taskId/:projectId', taskController.toggleCompletion, projectController.updateProgress);
 
 router.patch('/update_project/:id', projectController.updateProject);
+router.delete('/delete_project/:id', projectController.deleteProject);
 
 module.exports = router;
