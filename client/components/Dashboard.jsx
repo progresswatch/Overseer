@@ -11,7 +11,7 @@ class Dashboard extends Component {
 
   render() {
     const projects = this.props.appState.projects.map((project, i) => {
-      return <Link key={project.id} className="list-group-item" to={`/dashboard/projects/${project.id}`}>{project.name}</Link>;
+      return <Link key={project.id} className="list-group-item" to={`/dashboard/projects/${i}`}>{project.name}</Link>;
     });
 
     return (
