@@ -70,7 +70,7 @@ class ShowProject extends Component {
   submitTask(event) {
     const body = {
       name: event.target.newTask.value,
-      projectId: this.props.params.id,
+      projectId: this.state.project.id,
     };
     event.preventDefault();
     event.persist();
@@ -98,6 +98,7 @@ class ShowProject extends Component {
       })
       .then((project) => {
         this.setState({ project });
+        console.log(this.state);
       })
       .catch((err) => {
         console.log(err);
