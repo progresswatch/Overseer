@@ -5,6 +5,7 @@ class ShowProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      checked: true,
       project: {
         tasks: []
       },
@@ -15,12 +16,15 @@ class ShowProject extends Component {
     this.toggleCompletionAndUpdateProgress = this.toggleCompletionAndUpdateProgress.bind(this);
   }
   toggleCompletionAndUpdateProgress(id) {
+    console.log("DUDE");
     fetch('/patch/' + id + '/' + this.state.project.id, 
       { method: 'PATCH' }, 
       (response) => {
-        console.log(response);
-        this.fetchTask2();
-        this.setState({project:response.project});
+        console.log(this.state);
+        // this.fetchTask2();
+
+        this.setState({ project:response.project });
+        console.log(this.state);
     })
   }
   changeTask(event) {
@@ -84,7 +88,9 @@ class ShowProject extends Component {
       });
   }
 
-
+  checkTesting() {
+    this.setState({checked:!this.state.checked})
+  }
 
   componentWillMount() {
     this.fetchTask2();
@@ -95,8 +101,7 @@ class ShowProject extends Component {
       return (
         <li key={task.id} className="list-group-item">
           <form>
-            {task.completed ? <input type="checkbox" onClick={this.toggleCompletionAndUpdateProgress.bind(null, task.id)} checked></input> :
-             <input type="checkbox" onClick={this.toggleCompletionAndUpdateProgress.bind(null, task.id)}></input>}
+            <input type="checkbox" onClick={this.toggleCompletionAndUpdateProgress} checked={this.state.checked}></input> 
             {task.name}
           </form>
         </li>
