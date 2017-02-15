@@ -52,7 +52,8 @@ projectController.updateProgress = (req, res) => {
         project.update({
           percentProgress
         }).then((result) => {
-          res.json({percentProgress});
+          console.log(result);
+          res.json(result);
         })
       })
 

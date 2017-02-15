@@ -29,14 +29,7 @@ module.exports = function(express) {
             userName: req.user.username,
         });
     });
-    // router.get('/a',  (req, res) => {
-    //     if (req.session.isLoggedIn) {
-    //         return res.json({some:'thing'});
-    //     } 
-    //     req.session.isLoggedIn = true;
-    //     res.json({other:'thing'});
-    // })
-
+    
     router.get('/seed', (req, res) => {
       seed();
       res.send('seeded database');

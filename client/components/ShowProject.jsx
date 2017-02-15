@@ -5,23 +5,22 @@ class ShowProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tasks: [],
-      newTask: '',
       project: {
         tasks: []
       },
+      // id: this.props.appState.projects[this.props.params.index].id,
     };
     this.changeTask = this.changeTask.bind(this);
     this.submitTask = this.submitTask.bind(this);
     this.toggleCompletionAndUpdateProgress = this.toggleCompletionAndUpdateProgress.bind(this);
   }
   toggleCompletionAndUpdateProgress(id) {
-    // console.log(id, event);
-    fetch('/patch/' + id + '/' + this.props.params.id, 
+    fetch('/patch/' + id + '/' + this.state.project.id, 
       { method: 'PATCH' }, 
       (response) => {
         console.log(response);
         this.fetchTask2();
+        this.setState({project:response.project});
     })
   }
   changeTask(event) {
@@ -33,7 +32,7 @@ class ShowProject extends Component {
   submitTask(event) {
     const body = {
       name: event.target.newTask.value,
-      projectId: this.props.params.id,
+      projectId: this.state.project.id,
     };
     event.preventDefault();
     event.persist();
@@ -58,27 +57,27 @@ class ShowProject extends Component {
     })
   }
 
-  fetchTask() {
-    fetch(`/get_tasks/${this.props.params.id}`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((tasks) => {
-        this.setState({ tasks });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  // fetchTask() {
+  //   fetch(`/get_tasks/${this.props.params.id}`)
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((tasks) => {
+  //       this.setState({ tasks });
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
 
   fetchTask2() {
-    // fetch(`/get_tasks/${this.props.params.id}`)
     fetch(`/get_project_info/${this.props.params.id}`)
       .then((response) => {
         return response.json();
       })
       .then((project) => {
         this.setState({ project });
+        console.log(this.state);
       })
       .catch((err) => {
         console.log(err);
@@ -109,7 +108,7 @@ class ShowProject extends Component {
         <div className="row">
           <div className="col-md-8 col-md-offset-2">
             <div className="progress progress-striped active">
-              <div className="progress-bar" style={{ width: this.state.project.percentProgress + 80 + '%' }}></div>
+              <div className="progress-bar" style={{ width: this.state.project.percentProgress + '%' }}></div>
             </div>
             <h1>{this.state.project.name}</h1>
             <h3>Tasks:</h3>
