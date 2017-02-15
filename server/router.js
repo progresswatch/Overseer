@@ -32,7 +32,7 @@ module.exports = function(express) {
     // router.get('/a',  (req, res) => {
     //     if (req.session.isLoggedIn) {
     //         return res.json({some:'thing'});
-    //     } 
+    //     }
     //     req.session.isLoggedIn = true;
     //     res.json({other:'thing'});
     // })
@@ -51,6 +51,8 @@ module.exports = function(express) {
     router.get('/get_project_info/:id', projectController.getProjectInformation);
 
     router.patch('/patch/:taskId/:projectId', taskController.toggleCompletion, projectController.updateProgress);
+
+    router.patch('/update_project/:id', projectController.updateProject);
 
     return router;
 
