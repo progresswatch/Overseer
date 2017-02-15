@@ -58,4 +58,37 @@ projectController.updateProgress = (req, res) => {
 
   })
 }
+
+projectController.updateProject = (req, res) => {
+  // pass Task ID in body
+  Models.Task.findById(req.body.taskId)
+    .then((task) => {
+      console.log(task);
+      task.completed = !task.completed;
+      return task.save();
+    })
+    .then(() => {
+      console.log('saved');
+      return Models.Project.findById(req.params.id, { include: [ Models.Task ]})
+    })
+    .then((project) => {
+      const completed = project.tasks.filter((task) => {
+        return task.completed;
+      });
+      percentProgress = (completed.length/project.tasks.length) * 100;
+
+      project.percentProgress = percentProgress;
+      return project.save();
+    })
+    .then((project) => {
+      res.json(project)
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+
+
+
+}
+
 module.exports = projectController;
