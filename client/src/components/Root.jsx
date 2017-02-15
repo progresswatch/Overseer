@@ -43,7 +43,7 @@ class Root extends Component {
       name: event.target.newProject.value,
     };
     event.preventDefault();
-    event.persist();
+    event.target.newProject.value = '';
     fetch('/add_project', {
       headers: {
         'Content-Type': 'application/json'
@@ -51,9 +51,8 @@ class Root extends Component {
       method: 'POST',
       body: JSON.stringify(body),
     }).then(res => res.json()).then(newProject => {
-      console.log(newProject);
       const newProjects = this.state.projects.concat(newProject);
-      event.target.newProject.value = '';
+      
       this.setState({
         projects: newProjects
       });
@@ -62,7 +61,8 @@ class Root extends Component {
   handleLogin(e) {
     const username = e.target.elements.username.value;
     const password = e.target.elements.password.value;
-
+    e.target.password.value = '';
+    e.target.username.autoFocus = true;
     fetch('/login', {
       method: 'post',
       body: JSON.stringify({
@@ -73,12 +73,7 @@ class Root extends Component {
         'Content-Type': 'application/json'
       })
     }).then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      } else {
-        alert('Please enter valid fields.');
-        browserHistory.push('/');
-      }
+      return res.json();
     }).then((data) => {
       // console.log(data);
       this.setState({
@@ -86,9 +81,8 @@ class Root extends Component {
         isLoggedIn: true
       });
       browserHistory.push('/dashboard');
-    }).catch((res) => {
-      alert('Please enter valid fields.');
-      browserHistory.push('/');
+    }).catch((err) => {
+      browserHistory.push('/login');
     })
     e.preventDefault();
   }

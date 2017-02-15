@@ -17,6 +17,7 @@ class ShowProject extends Component {
 
     this.changeTask = this.changeTask.bind(this);
     this.submitTask = this.submitTask.bind(this);
+    this.deleteProject = this.deleteProject.bind(this);
     this.toggleCompletionAndUpdateProgress = this.toggleCompletionAndUpdateProgress.bind(this);
   }
 
@@ -47,6 +48,19 @@ class ShowProject extends Component {
     })
   }
 
+  deleteProject(e) {
+    e.preventDefault();
+    fetch(`/delete_project/${this.props.params.id}`, {
+      method: 'DELETE',
+    }).then((response) => {
+      if (response.ok) {
+        this.props.router.push('/dashboard');
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
   changeTask(event) {
     event.preventDefault();
     // console.log(event.target.value);
@@ -67,21 +81,17 @@ class ShowProject extends Component {
       method: 'POST',
       body: JSON.stringify(body),
     }).then((res) => {
-      // this.fetchTask();
       return res.json();
-    }).then((newTask) => {
-      const newProject = Object.create(this.state.project);
-      newProject.tasks.push(newTask);
+    }).then((newProject) => {
       event.target.newTask.value = '';
 
       this.setState({
         project: newProject,
       });
-      console.log(this.state.project);
     })
   }
 
-  fetchTask2() {
+  fetchTasks() {
     fetch(`/get_project_info/${this.props.params.id}`)
       .then((response) => {
         return response.json();
@@ -95,12 +105,8 @@ class ShowProject extends Component {
       });
   }
 
-  checkTesting() {
-    this.setState({checked:!this.state.checked})
-  }
-
   componentWillMount() {
-    this.fetchTask2();
+    this.fetchTasks();
   }
 
   render() {
@@ -142,6 +148,7 @@ class ShowProject extends Component {
                 </div>
               </div>
             </form>
+            <button className="btn btn-danger" onClick={this.deleteProject}>Delete Project</button>
           </div>
         </div>
       </div>
