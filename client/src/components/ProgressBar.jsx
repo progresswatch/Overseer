@@ -6,7 +6,7 @@ const ProgressBar = ({ progress }) => {
     progressClass += "progress-bar-success";
   } else if (progress > 60) {
     progressClass += "progress-bar-info";
-  } else if (progress > 40) {
+  } else if (progress > 20) {
     progressClass += "progress-bar-warning";
   } else {
     progressClass += "progress-bar-danger";
