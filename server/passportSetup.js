@@ -4,48 +4,42 @@ const bcrypt = require('bcrypt');
 const Models = require('./models');
 
 module.exports = function (app) {
-  app.use(passport.initialize());
-  app.use(passport.session());
-
-  passport.use(new LocalStrategy(
-    function (username, password, done) {
-      Models.User.findOne({
-        where: {
-          // fix username not in model yet. adopt attributes later
-          'username': username
-        }
-      }).then(function (user) {
-        if (user === null) {
-          return done(null, false, { message: 'Incorrect Username' })
-        }
-        // don't forget to generate salt and have salt property on user
-        const hashedPassword = bcrypt.hashSync(password, user.salt);
-
-        if (user.password === hashedPassword) {
-          return done(null, user);
-        }
-        return done(null, false, { message: 'Incorrect Password' })
-      })
-    }
-  ));
-
-  passport.serializeUser(function (user, done) {
+  passport.serializeUser((user, done) => {
+    console.log('serializing user');
     done(null, user.id);
   });
 
-  passport.deserializeUser(function (id, done) {
-    Models.User.findOne({
-      where: {
-        // we need to check this too.
-        'id': id
-      }
-    }).then(function (user) {
-      if (user === null) {
-        done(new Error('Wrong user id.'))
-      }
-      done(null, user);
-    }).catch((err) => {
-      console.log(err);
-    })
-  })
+  passport.deserializeUser((id, done) => {
+    console.log('deserialize user');
+    Models.User.findById(id)
+      .then(user => done(null, user))
+      .catch(err => done(err));
+  });
+
+  passport.use(new LocalStrategy(
+    function (username, password, done) {
+      process.nextTick(() => {
+        Models.User.findOne({
+          where: {
+            username: username
+          }
+        }).then(function (user) {
+          console.log('looking for user');
+          if (!user) {
+            return done(null, false);
+          }
+
+          if (!bcrypt.compareSync(password, user.password)) {
+            return done(null, false);
+          }
+
+          console.log('found valid user');
+          return done(null, user);
+        });
+      });
+    }
+  ));
+
+  app.use(passport.initialize());
+  app.use(passport.session());
 }

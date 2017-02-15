@@ -1,55 +1,41 @@
 const express = require('express');
 const path = require('path');
 const bodyparser = require('body-parser');
-const userController = require('./controller/userController');
 const passportSetup = require('./passportSetup');
-const router = require('./router')(express);
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
-// const cookieParser = require('cookie-parser');
+
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
+const Models = require('./models');
+const routes = require('./routes');
 
 const app = express();
 
-// app.use(cookieParser());
 app.use(bodyparser.json());
-app.use(bodyparser.urlencoded( {extended: true }));
+app.use(bodyparser.urlencoded({ extended: false }));
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 // add hot reload if in development
 if (isDevelopment) {
-  console.log('DEVELOPMENT MODE');
-  console.log('HOTLOADING CHANGES');
-  const webpack = require('webpack');
-  const webpackConfig = require('../webpack.config');
-  const compiler = webpack(webpackConfig);
-
-  app.use(require('webpack-dev-middleware')(compiler, {
-    hot: true,
-    stats: {
-      colors: true
-    },
-    publicPath: webpackConfig.output.publicPath,
-    noInfo: true,
-  }));
-
-  app.use(require('webpack-hot-middleware')(compiler));
+  require('./hotReload')(app);
 }
 
+app.use(cookieParser());
 app.use(session({
-  secret: 'overseerRTK',
-  resave: false,
-  saveUninitialized: false,
+  secret: 'this is a bad secret',
+  resave: true,
+  saveUninitialized: true,
 }));
 
 passportSetup(app);
 
-// add session
-// add cookierparser
-
-app.use('/', router);
-app.use(express.static(path.join(__dirname, '..', 'client')));
+app.use('/', routes);
+app.use(express.static(path.join(__dirname, '..', 'client', 'public')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/index.html'));
+  res.sendFile(path.join(__dirname, '../client/public/index.html'));
 });
 
 app.listen(3000, () => {
