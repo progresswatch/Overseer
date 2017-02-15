@@ -6,3 +6,11 @@ legend {
 .list-group-item {
   font-size: 18px;
 }
+
+#projects {
+  margin-bottom: 60px;
+}
+
+.progress {
+  margin-top: 15px;
+}

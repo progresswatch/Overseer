@@ -24,7 +24,10 @@ class Root extends Component {
     this.submitProject = this.submitProject.bind(this);
   }
   fetchProjects() {
-    fetch('/get_projects')
+    fetch('/get_projects', {
+      credentials: 'include',
+      origin: 'http://localhost:3000'
+    })
       .then((response) => {
         return response.json()
       })
@@ -60,7 +63,7 @@ class Root extends Component {
     const username = e.target.elements.username.value;
     const password = e.target.elements.password.value;
 
-    fetch('/', {
+    fetch('/login', {
       method: 'post',
       body: JSON.stringify({
         username,
@@ -138,7 +141,7 @@ class Root extends Component {
 
     return (
       <div>
-        <Navbar />
+        <Navbar isLoggedIn={this.state.isLoggedIn} />
         {theProps}
       </div>
     )
