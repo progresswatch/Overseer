@@ -32,11 +32,11 @@ class ShowProject extends Component {
       }
     })
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       return response.json();
     })
     .then((project) => {
-      console.log(project);
+      // console.log(project);
       this.setState({ project }, () => {
         console.log('state updated');
       });
@@ -97,7 +97,7 @@ class ShowProject extends Component {
       })
       .then((project) => {
         this.setState({ project });
-        console.log(this.state);
+        // console.log(this.state);
       })
       .catch((err) => {
         console.log(err);

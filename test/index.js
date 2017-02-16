@@ -2,4 +2,5 @@ require('babel-register')({
   presets: ['es2015', 'react'],
 });
 
-require('./test.js');
+require('./react-tests.js');
+require('./ajax-tests.js')

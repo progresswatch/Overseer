@@ -1,23 +1,15 @@
-// const mocha = require('mocha');
 const { mount, shallow } = require('enzyme');
 const fetch = require('node-fetch');
 const fetchMock = require('fetch-mock');
-const request = require('supertest');
 const expect = require('expect');
 const React = require('react');
 const sinon = require('sinon');
-// const ShowProject = require('../client/src/components/ShowProject.jsx');
-// const Dashboard = require('../client/src/components/Dashboard.jsx');
 import Dashboard from '../client/src/components/Dashboard.jsx';
 import ShowProject from '../client/src/components/ShowProject';
 
 global.fetch = fetch;
 fetchMock.get('*', { hello: 'world' });
 fetchMock.patch('*', { hello: 'world' });
-
-const PORT = process.env.PORT || 3000;
-const HOST = `http://localhost:${PORT}`;
-
 
 describe('Front-end', () => {
   let wrapper;
@@ -37,12 +29,6 @@ describe('Front-end', () => {
     it('Should render all projects', () => {
       wrapper = mount(<Dashboard appState={{ projects: [{id:1, percentProgress:20}, {id:2, percentProgress:10}] }} fetchProjects={()=>{}}/>);
       expect(wrapper.find('Link').length).toEqual(2);
-    });
-
-    it('Should be able to make get requests to DB', () => {
-      request(HOST)
-          .get('/get_projects')
-          .expect(200, done);
     });
   });
   describe('ShowProject', () => {
