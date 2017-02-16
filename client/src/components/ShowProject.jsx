@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-
 import ProgressBar from './ProgressBar.jsx';
 
 class ShowProject extends Component {
@@ -33,11 +32,11 @@ class ShowProject extends Component {
       }
     })
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       return response.json();
     })
     .then((project) => {
-      console.log(project);
+      // console.log(project);
       this.setState({ project }, () => {
         console.log('state updated');
       });
@@ -70,7 +69,7 @@ class ShowProject extends Component {
   submitTask(event) {
     const body = {
       name: event.target.newTask.value,
-      projectId: this.props.params.id,
+      projectId: this.state.project.id,
     };
     event.preventDefault();
     event.persist();
@@ -98,6 +97,7 @@ class ShowProject extends Component {
       })
       .then((project) => {
         this.setState({ project });
+        // console.log(this.state);
       })
       .catch((err) => {
         console.log(err);

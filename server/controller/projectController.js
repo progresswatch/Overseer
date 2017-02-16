@@ -48,13 +48,13 @@ projectController.updateProgress = (req, res) => {
     const completed = tasks.filter((task) => {
       return task.dataValues.completed;
     });
-    percentProgress = (completed.length/tasks.length) * 100;
+    const percentProgress = Math.floor((completed.length/tasks.length) * 100);
     Project.findById(req.params.projectId)
       .then((project) => {
         project.update({
           percentProgress
         }).then((result) => {
-          res.json({percentProgress});
+          res.json(result);
         })
       })
 
