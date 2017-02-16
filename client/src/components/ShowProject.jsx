@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-
 import ProgressBar from './ProgressBar.jsx';
 
 class ShowProject extends Component {
