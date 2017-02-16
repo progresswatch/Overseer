@@ -24,10 +24,10 @@ userController.signup = function(req, res) {
             password: hashedPassword,
             salt
         }
-        Models.User.create(newUser).then(function() {
-            res.status(200).send();
-        }).catch(function(error) {
-            res.status(404).send();
+        Models.User.create(newUser).then((user) => {
+            res.status(200).json(user);
+        }).catch((err) => {
+            res.status(400).json(err);
         })
     }
 }

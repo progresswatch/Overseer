@@ -7,6 +7,13 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
   }
+
+  componentWillMount() {
+    if (!this.props.appState.isLoggedIn) {
+      this.props.router.push('/login');
+    }
+  }
+
   componentDidMount() {
     this.props.fetchProjects();
   }

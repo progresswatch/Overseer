@@ -7,14 +7,7 @@ class Root extends Component {
   constructor() {
     super();
     this.state = {
-      user: '',
-      isLoggedIn: false,
-      firstName: '',
-      lastName: '',
-      email: '',
-      username: '',
-      password: '',
-      userInformation: '',
+      user: {},
       isLoggedIn: false,
       projects: []
     }
@@ -23,7 +16,18 @@ class Root extends Component {
     this.fetchProjects = this.fetchProjects.bind(this);
     this.submitProject = this.submitProject.bind(this);
   }
+
   fetchProjects() {
+    // axios.get('/get_projects', {
+    //   withCredentials: true,
+    // })
+    // .then((response) => {
+    //   console.log(response);
+    //   this.setState({ projects: response.data });
+    // })
+    // .catch((err) => {
+    //   throw err;
+    // });
     fetch('/get_projects', {
       credentials: 'include',
       origin: 'http://localhost:3000'
@@ -52,7 +56,7 @@ class Root extends Component {
       body: JSON.stringify(body),
     }).then(res => res.json()).then(newProject => {
       const newProjects = this.state.projects.concat(newProject);
-      
+
       this.setState({
         projects: newProjects
       });
@@ -108,12 +112,16 @@ class Root extends Component {
           'Content-Type': 'application/json'
         })
       }).then((res) => {
-        if (res.status === 200) {
-          browserHistory.push('/dashboard');
+        if (res.ok) {
+          return res.json();
         } else {
           alert('Please enter valid fields.');
           browserHistory.push('/signup');
         }
+      }).then((user) => {
+        this.setState({ user, isLoggedIn: true }, () => {
+          browserHistory.push('/dashboard');
+        })
       }).catch((res) => {
         alert('Please enter valid fields.');
         browserHistory.push('/signup');

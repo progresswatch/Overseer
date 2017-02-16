@@ -11,6 +11,7 @@
     "test": "export NODE_ENV=test && mocha --timeout 3000 --require ./test/setup.js test/"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "bcrypt": "^1.0.2",
     "body-parser": "^1.16.0",
     "cookie-parser": "^1.4.3",
