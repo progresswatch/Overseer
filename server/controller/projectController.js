@@ -15,7 +15,6 @@ projectController.addProject = (req, res) => {
 };
 
 projectController.getProjects = (req, res) => {
-  console.log(req.session);
   Project.findAll({
     // where: { userId: req.user.id }
   })
